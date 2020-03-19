@@ -14,7 +14,7 @@ There are two data processing pathways depending on the format of the raw ADCP d
 
 ### Demonstration cruise
 
-Together with this document, you will find a folder called  `demo_cruise/ADCP/150_KHZ` that contains raw VM-DAS data. We will use this as a test cruise for this tutorial. Once this works, you can go on and process real cruises from the IMR server.
+A demo VM-ADCP data set can be downloaded here: http://vedlegg.uib.no/?id=098379b05a30182a3211e9d34d9332f6. The zip file contains the folder structure `demo_cruise/ADCP/150_KHZ` that contains raw VM-DAS data. We will use this as a test cruise for this tutorial. Once this works, you can go on and process real cruises from the IMR server.
 
 ### ADCP data storage at IMR 
 
