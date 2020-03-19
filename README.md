@@ -549,5 +549,6 @@ title('2019')
 %   print(gcf,'-dpng',['vm-adcp-2019_all'],'-r500') 
 ```
 
-This map shows the locations of all processed ADCP profiles available in 2019:![vm-adcp-2019](VM-ADCP_documentation\vm-adcp-2019.png)
+This map shows the locations of all processed ADCP profiles available in 2019:
+![vm-adcp-2019](vm-adcp-2019.png)
 
