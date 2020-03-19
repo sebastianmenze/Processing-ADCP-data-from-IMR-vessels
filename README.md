@@ -8,7 +8,7 @@ ADCP data is gathered using either VM-DAS (the manufacturers software) or UH-DAS
 
 There are two data processing pathways depending on the format of the raw ADCP data. If .enr, .N1R and .N2R data from VM-DAS are used, we need to first convert these files into the UH DAS format. If UH-DAS data is used this step can be skipped. The flowchart below illustrates the main steps of the post-processing. The first step is to check the misalignment of the ADCP, then inspect and edit the data and export it as netcfd. The following sections explain the post-processing using an example cruise recorded with VM-DAS.
 
-![flowchart](D:\VM-ADCP_documentation\flowchart.png)
+![flowchart](flowchart.png)
 
 ## Locating the raw VM-ADCP data
 
@@ -90,7 +90,7 @@ One of the best tools for ADCP post-processing is the CODAS environment develope
 
 After installing the VirtualBox program, start it and load the CODAS image. Before starting up the CODAS virtual machine, open the Settings menu, navigate to "Shared folders" and add the `demo_cruise` folder.
 
-<img src="D:\VM-ADCP_documentation\oraclevmscreenshot.PNG" alt="oraclevmscreenshot" style="zoom:67%;" />
+<img src="oraclevmscreenshot.PNG" alt="oraclevmscreenshot" style="zoom:67%;" />
 
 Then start up the virtual machine and open a terminal and text editor. To process the demo_cruise VM-DAS data follow these steps.
 
@@ -110,11 +110,11 @@ adcp_database_maker.py
 
 and follow the GUI instructions. Select the folder "150_KHZ", enter the cruise name "demo_cruise" and push the "Convert enr files" button.  This can take some time depending on the amount of ADCP data. Then push the buttons to make the conversion files, convert the data and set up the processing directories. When the form "Proc Starter Form" opens, enter the misalignment an depth of the ADCP. This is estimated by the CODAS software in the text box or can be taken from a table in this document. Then press the buttons "Make config files" and "Set up processing directories".
 
-<img src="D:\VM-ADCP_documentation\2.PNG" alt="2" style="zoom:67%;" />
+<img src="2.PNG" alt="2" style="zoom:67%;" />
 
 Then a new form will open. Here you can choose to process either broadband, normal or if available narrowband data. I would go for narrowband data if available. To do so locate the pane termed "os150nb" or "os150" at the top of the form and then press the colored buttons one after the other.
 
-<img src="D:\VM-ADCP_documentation\3.PNG" alt="3" style="zoom:67%;" />
+<img src="3.PNG" alt="3" style="zoom:67%;" />
 
 Once this is finished you can close the form and navigate into a processing directory created by CODAS: 
 
@@ -196,17 +196,17 @@ dataviewer.py -e
 
 A GUI will open that shows a map of track and arrows, u and v velocity and amplitude sections and a steering panel. The goal of this stage is to remove erroneous ADCP data that the automatic bottom detection and thresholding algorithms could not detect.  Bad data that shoyuld be removed is marked with gray circles in the sections on the right hand side. To edit out data manually click the "Selectors" button, then a new window will open where you can encircle bad data. An example is given in the screenshot below. Here bad data from bottom reflections needs to be removed manually. Once you marked the bad parts using the rectangle or lasso tool, click "stage edits" and then the "Apply editing" button on the steering panel. Once you are down with that part of the dataset, click on the rightward arrow and repeat the editing if necessary. 
 
-![4](D:\VM-ADCP_documentation\4.PNG)
+![4](4.PNG)
 
 Examples for common artifacts are:
 
-bottom interference / false echoes <img src="D:\VM-ADCP_documentation\5.PNG" alt="5" style="zoom: 67%;" />
+bottom interference / false echoes <img src="5.PNG" alt="5" style="zoom: 67%;" />
 
 
 
-and erroneous profiles <img src="D:\VM-ADCP_documentation\6.PNG" alt="6" style="zoom:67%;" />
+and erroneous profiles <img src="6.PNG" alt="6" style="zoom:67%;" />
 
-ringing or bubbles under the ship: ![7](D:\VM-ADCP_documentation\7.PNG)
+ringing or bubbles under the ship: ![7](7.PNG)
 
 More detailed information on ADCP data artifacts can be found here: https://currents.soest.hawaii.edu/docs/adcp_doc/ADCP_INTERPRETATION/index.html. Once you have inspected and cleaned the entire cruise you can close the GUI and apply the changes by entering this command into the terminal:
 
@@ -363,7 +363,8 @@ m_plot(data_struct.lon,data_struct.lat,'.k')
 
 This will produce this map: 
 
-![vmadcp_map_vectors](D:\VM-ADCP_documentation\vmadcp_map_vectors.png)These ADCP profiles show the instantaneous current at a given given place and time. In areas with strong tides, it is useful to subtract tidal currents from the observed current velocities, to study only the residual flow. Especially if one is interested in the transport of particles and water masses, it is important to remove tidal currents, as these can obscure transport and circulation patterns. If there are many ADCP profiles (measured at different times) at the same location, it is possible to extract the local tidal constitutions from the ADCP data using harmonic analysis. A good a example of this is given in:
+![vmadcp_map_vectors](vmadcp_map_vectors.png)
+These ADCP profiles show the instantaneous current at a given given place and time. In areas with strong tides, it is useful to subtract tidal currents from the observed current velocities, to study only the residual flow. Especially if one is interested in the transport of particles and water masses, it is important to remove tidal currents, as these can obscure transport and circulation patterns. If there are many ADCP profiles (measured at different times) at the same location, it is possible to extract the local tidal constitutions from the ADCP data using harmonic analysis. A good a example of this is given in:
 
 Vindenes, H., Orvik, K. A., Søiland, H., & Wehde, H. (2018). Analysis of tidal currents in the North Sea from shipboard acoustic Doppler current profiler data. Continental Shelf Research, 162(February), 1–12. https://doi.org/10.1016/j.csr.2018.04.001
 
@@ -403,7 +404,7 @@ data_struct.v_detide=data_struct.v - repmat(tide.v,[ size(data_struct.v,1),1 ]) 
 
 The de-tided current data then looks like this:
 
-![vmadcp_map_vectors_detide](D:\VM-ADCP_documentation\vmadcp_map_vectors_detide.png)
+![vmadcp_map_vectors_detide](vmadcp_map_vectors_detide.png)
 
 The de-tided current vectors look reasonable in deep waters and on the shelf, but close to the coast (near Shetland and the Fjords) the tidal model predictions produce messy and potentially faulty predictions. The tidal models are not optimized for fjords and complex coastal geography, thus i am using the following routine to cut out de-tided ADCP data close to land,  by deleting data points in locations shallower than 10 m depth. Depth is derived from the global ETOPO-1 dataset that can be downloaded here: https://www.ngdc.noaa.gov/mgg/global/.
 
@@ -451,7 +452,7 @@ m_plot(data_struct.lon,data_struct.lat,'.k')
 
 The cleaned de-tided ADCP data now look like this:
 
-![vmadcp_map_vectors_detide_clean](D:\VM-ADCP_documentation\vmadcp_map_vectors_detide_clean.png)
+![vmadcp_map_vectors_detide_clean](vmadcp_map_vectors_detide_clean.png)
 
 ## Collecting and plotting the netcdf files
 
@@ -548,5 +549,5 @@ title('2019')
 %   print(gcf,'-dpng',['vm-adcp-2019_all'],'-r500') 
 ```
 
-This map shows the locations of all processed ADCP profiles available in 2019:![vm-adcp-2019](D:\VM-ADCP_documentation\vm-adcp-2019.png)
+This map shows the locations of all processed ADCP profiles available in 2019:![vm-adcp-2019](VM-ADCP_documentation\vm-adcp-2019.png)
 
